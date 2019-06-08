@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Chatbot</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+</head>
+<body>
+<div class="container">
+
+</div>
+<!--scripts go here-->
+<script src="jquery.js"></script>
+<script>
+
+        function decode(line){
+            var words = line.split(/\s+/);
+            var type;
+            var amount = 0;
+            var done = false;
+            for(var i in words){
+                if (words[i].match(/(spen)|(los)/) && !done){
+                    type = false;
+                    done = true;
+                }else if (words[i].match(/(receive)|(won)|(got)/) && !done){
+                    type = true;
+                    done = true;
+                } else if (!done) {
+                    type = undefined;
+                    done = true;
+                }
+
+                if (words[i].match(/^\d+$/)){
+                    amount = parseInt(words[i]);
+                }
+
+            }
+            return {
+                type:type,amount:amount,line:line
+            };
+        }
+
+
+
+    $(document).ready(function () {
+
+        function chat(line) {
+            var message = line;
+            var event = decode(message);
+            var total = window.localStorage.getItem("amount");
+            if (total == null) total = 0;
+            total += event.amount;
+            window.localStorage.setItem("amount",total);
+            var reply;
+            if (event.type == true){
+                reply = 'Your Balance Increased to: '+total;
+            } else if (event.type == false){
+                reply = 'Your Balance Decreased to: '+total;
+            } else{
+                var got_it = isSummary(line);
+                if (got_it){
+                    reply = 'Your Total Balance is: '+total;
+                } else{
+                    reply = 'Sorry!! We didn`t recognised that';
+                }
+            }
+            var bot_reply = $("<div/>",{
+                class:"bots",
+                text:reply
+            });
+            var my_query = $("<div/>",{
+                class:"my",
+                text:line
+            });
+
+            $('#msgs').appendChild(my_query);
+            $('#msgs').appendChild(bot_reply);
+        }
+
+        function isSummary(line) {
+            return line.toLowerCase().indexOf("summary");
+        }
+
+        function callback_field (event) {
+            if (event.keyCode == 13){
+                chat($('#msg').val());
+            }
+        }
+        function callback_button(event) {
+            chat($('#msg').val());
+        }
+
+        $("#send").click(callback_button);
+        $("#msg").keyup(callback_field);
+    });
+</script>
+</body>
+</html>
