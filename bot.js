@@ -1,13 +1,21 @@
+/**
+ * Takes User Input and decode it
+ * @param line ( user input )
+ * @returns {{type: *, amount: number, line: *}}
+ */
+
 function decode(line){
     var words = line.split(/\s+/);
     var type;
     var amount = 0;
     var done = false;
+
+
     for(var i in words){
         if (words[i].match(/(spen)|(los)/) && !done){
             type = false;
             done = true;
-        }else if (words[i].match(/(receive)|(won)|(got)/) && !done){
+        }else if (words[i].match(/(receive)|(won)|(got)|(saved)/) && !done){
             type = true;
             done = true;
         } else if (!done) {
@@ -45,7 +53,10 @@ function decode(line){
 
 
 $(document).ready(function () {
-
+    /**
+     * Perform Chat Operation
+     * @param line
+     */
     function chat(line) {
         var message = line;
         var event = decode(message);
@@ -99,6 +110,11 @@ $(document).ready(function () {
         $("#msg").val("");
     }
 
+    /**
+     * Checks whether summary word is prsent or not
+     * @param user input as line
+     * @returns {integer number index of summary word}
+     */
     function isSummary(line) {
         return line.toLowerCase().indexOf("summary");
     }
@@ -114,5 +130,5 @@ $(document).ready(function () {
 
     $("#send").click(callback_button);
     $("#msg").keyup(callback_field);
-    
+
 });
