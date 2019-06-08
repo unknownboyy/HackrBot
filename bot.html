@@ -16,14 +16,11 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
   </head>
   <body>
-      <div id="wrapper"><br>
+      <div id="wrapper" style="overflow-y: scroll;max-height: 85%;"><br>
      <p>&nbsp;&nbsp;&nbsp;&nbsp;Hi there, start your chat..</p>
      <div id="msgs"></div>
 
-     <div class="">
-            <input type="text" id="msg" style="width:50%;float: left;" class="form-control"  aria-label="Recipient's username" aria-describedby="basic-addon2">
-     </div>
-     <div class="input-group mb-3" class="footer">
+     <div class="input-group" style="width: 44%;bottom: 4%;position: fixed;">
                    <input type="text" id="msg" style="width:50%;float: right;" class="form-control"  aria-label="Recipient's username" aria-describedby="basic-addon2">
              
                       <div class="input-group-append">
@@ -33,5 +30,7 @@
                   </div>
         </div>
     <!--scripts go here-->
+  <script src="jquery.js"></script>
+  <script src="bot.js"></script>
   </body>
 </html>
